@@ -19,10 +19,9 @@ declare global {
 	}
 }
 
-// auth(Role.ADMIN, Role.USER, Role.Author)
-// auth() => ...requiredRoles => [Role.ADMIN, Role.USER, Role.AUTHOR]
 export const auth = (...requiredRoles: Role[]) => {
 	return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+		// 1. Extract Token from Cookies or Authorization Header
 		const token = req.cookies.accessToken
 			? req.cookies.accessToken
 			: req.headers.authorization?.startsWith("Bearer ")
@@ -35,6 +34,7 @@ export const auth = (...requiredRoles: Role[]) => {
 			);
 		}
 
+		// 2. Verify JWT Token
 		const verifiedToken = jwtUtils.verifyToken(token, config.jwt_access_secret);
 
 		if (!verifiedToken.success) {
@@ -43,18 +43,17 @@ export const auth = (...requiredRoles: Role[]) => {
 
 		const { email, name, userId, role } = verifiedToken.data as JwtPayload;
 
+		// 3. Check Role Authorization
 		if (requiredRoles.length && !requiredRoles.includes(role)) {
 			throw new Error(
 				"Forbidden. You don't have permission to access this resource.",
 			);
 		}
 
+		// 4. Check if User exists in DB (Fixed Prisma findUnique query)
 		const user = await prisma.user.findUnique({
 			where: {
 				id: userId,
-				email,
-				name,
-				role,
 			},
 		});
 
@@ -62,10 +61,12 @@ export const auth = (...requiredRoles: Role[]) => {
 			throw new Error("User not found. Please log in again.");
 		}
 
+		// 5. Check if User is blocked
 		if (user.status === "BLOCKED") {
 			throw new Error("Your account has been blocked. Please contact support.");
 		}
 
+		// 6. Attach user info to request object
 		req.user = {
 			email,
 			name,

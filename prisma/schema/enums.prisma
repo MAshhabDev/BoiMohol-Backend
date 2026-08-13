@@ -25,3 +25,9 @@ enum PaymentMethod {
   NAGAD
   SSLCOMMERZ
 }
+
+
+enum Status{
+  ACTIVE
+  BLOCKED
+}
