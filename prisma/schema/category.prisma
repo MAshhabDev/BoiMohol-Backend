@@ -1,0 +1,9 @@
+model Category {
+  id             String   @id @default(uuid())
+  name           String
+  slug           String   @unique
+  categoryPrefix String   @unique @db.VarChar(2) // e.g. '12' for Literature
+  createdAt      DateTime @default(now())
+  books          Book[]
+  @@map("categories")
+}

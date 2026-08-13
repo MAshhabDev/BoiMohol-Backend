@@ -1,0 +1,10 @@
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  bookId    String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  book      Book     @relation(fields: [bookId], references: [id])
+  @@map("cart_items")
+}

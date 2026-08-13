@@ -1,0 +1,28 @@
+
+model Book {
+  id           String      @id @default(uuid())
+  title        String
+  slug         String      @unique
+  description  String?     @db.Text
+  coverImage   String?
+  samplePdfUrl String?     // PDF Excerpt preview
+  authorId     String
+  publisherId  String
+  categoryId   String
+  binding      BindingType @default(PAPERBACK)
+  sku          String      @unique
+  barcode      String      @unique @db.VarChar(12) 
+  regularPrice Decimal     @db.Decimal(10, 2)
+  salePrice    Decimal?    @db.Decimal(10, 2)
+  stock        Int         @default(0)
+  isFeatured   Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  author       Author      @relation(fields: [authorId], references: [id])
+  publisher    Publisher   @relation(fields: [publisherId], references: [id])
+  category     Category    @relation(fields: [categoryId], references: [id])
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
+  reviews      Review[]
+  @@map("books")
+}

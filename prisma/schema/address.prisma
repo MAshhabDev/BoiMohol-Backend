@@ -1,0 +1,13 @@
+
+model Address {
+  id            String   @id @default(uuid())
+  userId        String
+  recipientName String
+  phone         String
+  district      String
+  thana         String
+  fullAddress   String
+  createdAt     DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("addresses")
+}

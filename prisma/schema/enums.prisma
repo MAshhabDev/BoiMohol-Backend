@@ -1,23 +1,27 @@
 enum Role {
   SUPER_ADMIN
   ADMIN
-  DOCTOR
-  PATIENT
+  CUSTOMER
 }
-
-enum UserStatus {
-  ACTIVE
-  BLOCKED
-  DELETED
+enum BindingType {
+  PAPERBACK
+  HARDCOVER
 }
-
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
 }
-
-enum AuthProvider {
-  GOOGLE
-  CREDENTIAL
+enum PaymentStatus {
+  UNPAID
+  PAID
+}
+enum PaymentMethod {
+  COD
+  BKASH
+  NAGAD
+  SSLCOMMERZ
 }
