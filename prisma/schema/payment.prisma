@@ -1,0 +1,15 @@
+model Payment {
+    id            String        @id @default(uuid())
+    orderId       String
+    amount        Decimal       @db.Decimal(10, 2)
+    paymentMethod PaymentMethod @default(COD)
+    paymentStatus PaymentStatus @default(UNPAID)
+    transactionId String?       @unique
+    gatewayData   Json?
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
+
+    order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+    @@map("payments")
+}
