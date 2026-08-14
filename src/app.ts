@@ -9,8 +9,13 @@ import { notFound } from "./app/middleware/notFound";
 // Module Routes Imports
 import { AuthRoutes } from "./app/module/auth/auth.route";
 import { AuthorRoutes } from "./app/module/author/author.route";
+import { BookRoutes } from "./app/module/book/book.route";
+import { CartRoutes } from "./app/module/cart/cart.route";
 import { CategoryRoutes } from "./app/module/category/category.route";
+import { OrderRoutes } from "./app/module/order/order.route";
 import { PublisherRoutes } from "./app/module/publisher/publisher.route";
+import { ReviewRoutes } from "./app/module/review/review.route";
+import { PaymentRoutes } from "./app/payment/payment.route";
 
 const app: Application = express();
 
@@ -32,6 +37,11 @@ app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/authors", AuthorRoutes);
 app.use("/api/v1/publishers", PublisherRoutes);
 app.use("/api/v1/categories", CategoryRoutes);
+app.use("/api/v1/books", BookRoutes);
+app.use("/api/v1/carts", CartRoutes);
+app.use("/api/v1/orders", OrderRoutes);
+app.use("/api/v1/reviews", ReviewRoutes);
+app.use("/api/v1/payments", PaymentRoutes);
 
 // Root Welcome Route
 app.get("/", async (req: Request, res: Response) => {
