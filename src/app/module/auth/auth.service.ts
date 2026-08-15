@@ -7,7 +7,6 @@ import config from "../../config";
 import { googleClient } from "../../lib/googleAuth";
 import { transporter } from "../../lib/nodemailer";
 import { prisma } from "../../lib/prisma";
-import { redisClient } from "../../lib/redis";
 import { jwtUtils } from "../../utils/jwt";
 import type {
 	IForgotPasswordPayload,
