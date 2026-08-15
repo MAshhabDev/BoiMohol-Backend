@@ -5,7 +5,6 @@ import type { JwtPayload, SignOptions } from "jsonwebtoken";
 import { Role, Status } from "../../../generated/prisma/enums";
 import config from "../../config";
 import { googleClient } from "../../lib/googleAuth";
-import { transporter } from "../../lib/nodemailer";
 import { prisma } from "../../lib/prisma";
 import { jwtUtils } from "../../utils/jwt";
 import type {
