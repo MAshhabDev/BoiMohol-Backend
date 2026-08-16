@@ -1,28 +1,21 @@
-import { NextFunction, Request, Response } from "express";
-import z from "zod";
+import type { NextFunction, Request, Response } from "express";
+import type { ZodSchema } from "zod";
 import { catchAsync } from "../utils/catchAsync";
 
-export const validateRequest = (zodSchema: z.ZodObject) => {
-    return catchAsync(
-        (req: Request, res: Response, next: NextFunction) => {
+export const validateRequest = (zodSchema: ZodSchema) => {
+	return catchAsync(async (req: Request, _res: Response, next: NextFunction) => {
+		const payload = req.body ?? {};
+		const result = zodSchema.safeParse(payload);
 
+		if (!result.success) {
+			console.log(result.error);
+			console.log(result.error.issues);
 
-            // const payload = req.body ? req.body : {}
-            const payload = req.body ?? {}
+			const message = result.error.issues[0]?.message || "Validation Error";
+			throw new Error(message);
+		}
 
-            const result = zodSchema.safeParse(payload);
-
-            if (!result.success) {
-                console.log(result.error);
-                console.log(result.error.issues);
-
-                throw new Error(result.error.issues[0].message)
-            }
-
-            req.body = result.data
-
-            next()
-
-        }
-    )
-}
+		req.body = result.data;
+		next();
+	});
+};
